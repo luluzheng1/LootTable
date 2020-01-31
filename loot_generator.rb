@@ -25,7 +25,7 @@ class Loot
 
     def initializeTables
         @LootTables = []
-        @Hash.each {|x|
+        @Hash.each {|x|  
             @LootTables.push(LootTable.new(x)) 
         }
     end
@@ -46,14 +46,15 @@ class LootTable
     def initialize(t)
         @TableType = t["TableType"]
         @TableName = t["TableName"]
-        @TableEntryCollection = initialize_entries(t)
+        @TableEntryCollection = initialize_entries(t["TableEntryCollection"])
+        # puts t.entries
     end
 
     # Initializes a set of TableEntrys for a LootTable object
-    def initialize_entries(table)
+    def initialize_entries(entries)
         @TableEntryCollection = []
 
-        table["TableEntryCollection"].each {|x|
+        entries.each {|x|
             @TableEntryCollection.push(Entry.new(x))
         }
     end
@@ -71,25 +72,21 @@ class LootTable
         return @TableEntryCollection
     end
 
-    def select_entry_random #NOT WORKING
-        totalWeight = 0
-        prevWeight = 0
-        weight = []
-        entries.each {|e|
-            # puts e 
-            totalWeight += e.weight
-            weight.push(prevWeight + e.weight)
-            prevWeight = e.weight
-        }
+    # def select_entry_random #NOT WORKING
+    #     totalWeight = 0
+    #     weight = []
+    #     entries.each {|e|
+    #         totalWeight += e.SelectionWeight
+    #         weight.push(totalWeight)
+    #     }
 
-        randomNum = rand(100);
-        weight.each {|w|
-            currWeight = (w / totalWeight) * 100
-            if (randomNum < currWeight)
-                return entries[w][EntryName]
-            end
-        }
-    end
+    #     randomNum = rand(totalWeight);
+    #     weight.each {|w, index|
+    #         if (randomNum < w)
+    #             return entries[index]["EntryName"]
+    #         end
+    #     }
+    # end
 end
 
 class Entry
@@ -113,7 +110,8 @@ class Entry
 end
 
 myLoot = Loot.new($h)
-puts myLoot.tables[0].select_entry_random
+puts myLoot.tables[0].entries.inspect
+
 # myLoot.printTables
 
 
