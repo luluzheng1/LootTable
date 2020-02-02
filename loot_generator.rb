@@ -16,6 +16,16 @@ class Loot
         return @LootTables
     end
 
+    def findTable(name)
+        tables.each {|x|
+            if x.name.eql? name
+                return x
+            end
+        }
+
+        raise "Table " + name + "does not exist"
+    end
+
     def printTables
         puts @LootTables.inspect
     end
@@ -59,8 +69,8 @@ class LootTable
         randomNum = rand(0..totalWeight);
 
         weightArray.each_with_index {|w, i|
-            if (randomNum <= w)
-                return entries[i].name
+            if randomNum <= w
+                return entries[i]
             end
         }
     end
@@ -68,7 +78,8 @@ class LootTable
     # Performs loot drop for Random loot table
     def random(num_drop)
         while num_drop > 0
-            puts select_entry
+            curr_entry = select_entry
+            puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
             num_drop -= 1
         end 
     end
@@ -86,7 +97,7 @@ class LootTable
             curr_entry = select_entry
             
             if (!temp.include? curr_entry)
-                puts curr_entry
+                puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
                 temp.push(curr_entry)
                 num_drop -= 1
             end
@@ -161,8 +172,3 @@ def printHash(hash)
 end
 
 end
-
-# $h = JSONtoHash()
-
-# myLoot = Loot.new($h)
-# p myLoot.tables[0].select_entry
