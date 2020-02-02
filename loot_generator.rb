@@ -1,18 +1,5 @@
 require 'json'
 
-def JSONtoHash
-    file = File.read('loot_table_example.json')
-    hash = JSON.parse(file)
-end
-
-def printHash(hash)
-    hash.each do |i|
-        puts i
-    end
-end
-
-$h = JSONtoHash()
-
 class Loot
     # Takes in a hash and initializes an array of LootTables
     def initialize(h)
@@ -29,16 +16,14 @@ class Loot
         return @LootTables
     end
 
-    def tables
-        return @LootTables
-    end
-
-
     def printTables
         puts @LootTables.inspect
     end
 
-
+    # Get Function(s)
+    def tables
+        return @LootTables
+    end
 end
 
 class LootTable
@@ -60,6 +45,56 @@ class LootTable
         return @TableEntryCollection
     end
 
+    # Creates loot from a loot table
+    # Returns the weight of the entry
+    def select_entry
+        totalWeight = 0
+        weightArray = []
+        
+        entries.each {|e|
+            totalWeight += e.weight
+            weightArray.push(totalWeight)
+        }
+
+        randomNum = rand(0..totalWeight);
+
+        weightArray.each_with_index {|w, i|
+            if (randomNum <= w)
+                return entries[i].name
+            end
+        }
+    end
+
+    # Performs loot drop for Random loot table
+    def random(num_drop)
+        while num_drop > 0
+            puts select_entry
+            num_drop -= 1
+        end 
+    end
+
+    # Performs loot drop for UniqueRandom loot table
+    # Raises error when selecting after all entries
+    # have been selected
+    def uniquerandom(num_drop)
+        temp = []
+        exhausted = false
+        while num_drop > 0
+            if exhausted
+                raise "Entries all exhausted" 
+            end
+            curr_entry = select_entry
+            
+            if (!temp.include? curr_entry)
+                puts curr_entry
+                temp.push(curr_entry)
+                num_drop -= 1
+            end
+
+            exhausted = entries.length.eql? temp.length
+        end
+    end
+
     # Get Functions
     def type
         @TableType
@@ -69,49 +104,65 @@ class LootTable
         @TableName
     end
 
-    def get_entries
+    def entries
         @TableEntryCollection
     end
-
-    # def select_entry_random #NOT WORKING
-    #     totalWeight = 0
-    #     weight = []
-    #     entries.each {|e|
-    #         totalWeight += e.SelectionWeight
-    #         weight.push(totalWeight)
-    #     }
-
-    #     randomNum = rand(totalWeight);
-    #     weight.each {|w, index|
-    #         if (randomNum < w)
-    #             return entries[index]["EntryName"]
-    #         end
-    #     }
-    # end
 end
 
 class Entry
     # Takes in an entry hash object and initializes an Entry object
     def initialize(e)
-      @EntryType = e["EntryType"]
-      @EntryName = e["EntryName"]
-      @MinDrops = e["MinDrops"]
-      @MaxDrops = e["MaxDrops"]
-      @SelectionWeight = e["SelectionWeight"]
+        @EntryType = e["EntryType"]
+        @EntryName = e["EntryName"]
+        @MinDrops = e["MinDrops"]
+        @MaxDrops = e["MaxDrops"]
+        @SelectionWeight = e["SelectionWeight"]
+    end
+
+    # Generates a random amount between MinDrops and MaxDrops
+    def select_amount
+        amount = rand(min..max)
+        return amount
     end
 
     # Get Functions
     def weight
-      return @SelectionWeight
+        return @SelectionWeight
     end
 
-    def entry_type
-      return @EntryType
+    def type
+        return @EntryType
+    end
+
+    def name
+        return @EntryName
+    end
+
+    def min
+        return @MinDrops
+    end
+
+    def max
+        return @MaxDrops
+    end
+
+end
+
+class Util
+def JSONtoHash
+    file = File.read('loot_table_example.json')
+    return JSON.parse(file)
+end
+
+def printHash(hash)
+    hash.each do |i|
+        puts i
     end
 end
 
-myLoot = Loot.new($h)
-p myLoot.tables.first.get_entries.first.weight
-# myLoot.printTables
+end
 
+# $h = JSONtoHash()
 
+# myLoot = Loot.new($h)
+# p myLoot.tables[0].select_entry
