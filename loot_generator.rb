@@ -13,9 +13,6 @@ end
 
 $h = JSONtoHash()
 
-#puts $h[2]["TableEntryCollection"]
-#printHash($h)
-
 class Loot
     # Takes in a hash and initializes an array of LootTables
     def initialize(h)
@@ -26,13 +23,16 @@ class Loot
     def initializeTables
         @LootTables = []
         @Hash.each {|x|  
-            @LootTables.push(LootTable.new(x)) 
+            temp = LootTable.new(x)
+            @LootTables.push(temp)
         }
+        return @LootTables
     end
 
     def tables
         return @LootTables
     end
+
 
     def printTables
         puts @LootTables.inspect
@@ -47,29 +47,30 @@ class LootTable
         @TableType = t["TableType"]
         @TableName = t["TableName"]
         @TableEntryCollection = initialize_entries(t["TableEntryCollection"])
-        # puts t.entries
     end
 
     # Initializes a set of TableEntrys for a LootTable object
-    def initialize_entries(entries)
+    def initialize_entries(e)
         @TableEntryCollection = []
 
-        entries.each {|x|
-            @TableEntryCollection.push(Entry.new(x))
+        e.each {|x|
+            temp = Entry.new(x)
+            @TableEntryCollection.push(temp)
         }
+        return @TableEntryCollection
     end
 
     # Get Functions
     def type
-        return @TableType
+        @TableType
     end
 
     def name
-        return @TableName
+        @TableName
     end
 
-    def entries
-        return @TableEntryCollection
+    def get_entries
+        @TableEntryCollection
     end
 
     # def select_entry_random #NOT WORKING
@@ -110,8 +111,7 @@ class Entry
 end
 
 myLoot = Loot.new($h)
-puts myLoot.tables[0].entries.inspect
-
+p myLoot.tables.first.get_entries.first.weight
 # myLoot.printTables
 
 
