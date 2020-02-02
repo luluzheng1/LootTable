@@ -23,7 +23,9 @@ class Loot
             end
         }
 
-        raise "Table " + name + "does not exist"
+        if !name.nil?
+            raise "Table " + name + "does not exist"
+        end
     end
 
     def printTables
@@ -55,8 +57,8 @@ class LootTable
         return @TableEntryCollection
     end
 
-    # Creates loot from a loot table
-    # Returns the weight of the entry
+    # Select an entry from a loot table
+    # Returns the entry object
     def select_entry
         totalWeight = 0
         weightArray = []
@@ -77,11 +79,29 @@ class LootTable
 
     # Performs loot drop for Random loot table
     def random(num_drop)
+        dropSet = Hash.new
+        
         while num_drop > 0
             curr_entry = select_entry
-            puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
+            curr_name = curr_entry.name
+            amount = curr_entry.select_amount
+
+            # If in hash, update value
+            # Otherwise add to hash
+            if dropSet.key?(curr_name)
+                # puts "Adding to " + curr_name
+                dropSet[curr_name] += amount
+            else
+                # puts "Inserting " + curr_name
+                dropSet[curr_name] = amount
+            end
+            # puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
             num_drop -= 1
         end 
+
+        dropSet.each {|name, amount| 
+                puts "Dropped #{amount} #{name}"
+            }
     end
 
     # Performs loot drop for UniqueRandom loot table
