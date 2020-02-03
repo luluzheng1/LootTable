@@ -7,7 +7,6 @@ $h = u.JSONtoHash
 myLoot = Loot.new($h)
 
 loop do
-
 	# Get user input 
 	input = gets
 	input ||= '' # Set to empty strin if nil
@@ -17,10 +16,22 @@ loop do
 	numDrop = input.split.last.to_i
 
 	table = myLoot.findTable(tableName)
-	# Handle treasurechest differently
+	tablenames = myLoot.names
+	h = Hash.new
+
 	if table.type.eql? "Random"
-		table.random(numDrop)
-	elsif table.type.eql? "UniqueRandom"
-		table.uniquerandom(numDrop)
+		h = table.random(tablenames, numDrop)
+	else
+		h = table.uniquerandom(tablenames, numDrop)
 	end
+
+	h.each {|name, amount|
+		table = myLoot.findTable(name)
+			
+		if table.type.eql? "Random"
+			table.random(tablenames, amount)
+		else
+			table.uniquerandom(tablenames, amount)
+		end
+	}
 end
