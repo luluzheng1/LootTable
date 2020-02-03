@@ -1,14 +1,11 @@
 require "./loot.rb"
 
-# Read data from JSON file
-# Initialize Loot object
 u = Util.new
-$h = u.JSONtoHash
-myLoot = Loot.new($h)
+$h = u.JSONtoHash # Read data from JSON file
+myLoot = Loot.new($h) # Initialize Loot object
 
 loop do
-	# Get user input 
-	input = gets
+	input = gets # Get user input 
 	input ||= '' # Set to empty string if nil
 	input.chomp! # Remove trailing newline
 	exit if input == 'exit'
@@ -16,6 +13,8 @@ loop do
 	numDrop = input.split.last.to_i
 
 	table = myLoot.findTable(tableName)
+	
+	# Check input is valid
 	if table.nil?
 		puts "Table " + tableName + " does not exist, please enter a valid table name"
 		next

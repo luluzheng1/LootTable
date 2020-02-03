@@ -26,7 +26,7 @@ This loot generator application contains four files: main.rb, loot.rb, loot_tabl
 >   * Class Loot creates an object that is an array of LootTables
 >	  * initialize(h) - take in a hash and initialize a Loot object
 >     * initializeTables - initialize an array of LootTables
->     * findTable(name) - take in a name (string) and returns a LootTable object of that name. if there exists one. Otherwise return nil.
+>     * findTable(name) - take in a name (string) and returns a LootTable object of that name if there exists one. Otherwise return nil.
 >     * printTables - print all LootTable objects in Loot
 >     * tables - return an array of all LootTable objects in Loot
 >     * names - return an array of the names of all LootTable objects in Loot 

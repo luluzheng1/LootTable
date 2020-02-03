@@ -1,5 +1,5 @@
 class LootTable
-    # Takes in a table hash object in h and Initializes a LootTable object
+    # Take in a table hash and initialize a LootTable object
     def initialize(t)
         @TableType = t["TableType"]
         @TableName = t["TableName"]
@@ -17,8 +17,7 @@ class LootTable
         return @TableEntryCollection
     end
 
-    # Select an entry from a loot table
-    # Returns the entry object
+    # Returns a randomly selected entry from TableEntryCollection
     def select_entry
         totalWeight = 0
         weightArray = []
@@ -37,7 +36,7 @@ class LootTable
         }
     end
 
-    # Returns an array of entries that are tables
+    # Returns an array of entries that are LootTables
     def entriesAreTable(tablenames)
         tables = []
         entrynames.each { |x|
@@ -48,7 +47,8 @@ class LootTable
         return tables
     end
 
-    # Performs loot drop for Random loot table
+    # Generates loot for LootTables of type "Random"
+    # Returns a hash of the names of entries to the number of drops as values
     def random(tablenames, num_drop)
         dropSet = Hash.new
         tables = entriesAreTable(tablenames)
@@ -58,35 +58,33 @@ class LootTable
             curr_name = curr_entry.name
             amount = curr_entry.select_amount
 
-            # If in hash, update value
-            # Otherwise add to hash
+            # If in hash, update value, otherwise add to hash
             if dropSet.key?(curr_name)
-                # puts "Adding to " + curr_name
                 dropSet[curr_name] += amount
             else
-                # puts "Inserting " + curr_name
                 dropSet[curr_name] = amount
             end
-            # puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
+
             num_drop -= 1
         end 
 
         dropSet.each {|name, amount| 
-                # if entry is a table do not print to stdout
+                # If entry is a table do not print
                 if tables.include? name
                     h[name] = amount
                 else
                     puts "Dropped #{amount} #{name}"
                 end
             }
+
        return h
     end
 
-    # Performs loot drop for UniqueRandom loot table
-    # Prints error statement when selecting after all entries
-    # have been selected
+    # Generates loot for LootTables of type "UniqueRandom". 
+    # Returns a hash of the names of entries to the number of drops
+    # When all entries have been selected, no loot is further generated.
     def uniquerandom(tablenames, num_drop)
-        temp = [] #keeps track of uniqueness
+        selected = [] # Store entries already selected
         exhausted = false
         h = Hash.new
 
@@ -99,7 +97,7 @@ class LootTable
             curr_name = curr_entry.name
             amount = curr_entry.select_amount
 
-            if (!temp.include? curr_entry)
+            if (!selected.include? curr_entry)
                 if tablenames.include? curr_name
                     if h.key? curr_name
                         h[curr_name] += amount
@@ -107,13 +105,14 @@ class LootTable
                         h[curr_name] = amount
                     end
                 else
-                    puts "Dropped " + curr_entry.select_amount.to_s + " " + curr_entry.name
+                    puts "Dropped " + amount.to_s + " " + curr_name
                 end
-                temp.push(curr_entry)
+
+                selected.push(curr_entry)
                 num_drop -= 1
             end
 
-            exhausted = entries.length.eql? temp.length
+            exhausted = entries.length.eql? selected.length
         end
         
         return h
@@ -132,6 +131,7 @@ class LootTable
         @TableEntryCollection
     end
 
+    # Return an array of the names of all entries in LootTable
     def entrynames
         names = []
         entries.each {|x|

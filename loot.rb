@@ -17,7 +17,7 @@ end
 end
 
 class Loot
-    # Takes in a hash and initializes an array of LootTables
+    # Take in a hash and initialize a Loot object
     def initialize(h)
         @Hash = h
         @LootTables = initializeTables
@@ -32,6 +32,8 @@ class Loot
         return @LootTables
     end
 
+    # Take in a name (string) and returns a LootTable object of that name 
+    # if there exists one, otherwise return nil.
     def findTable(name)
         tables.each {|x|
             if x.name.eql? name
@@ -50,6 +52,7 @@ class Loot
         return @LootTables
     end
 
+    # Return an array of the names of all LootTable objects in Loot
     def names
         names = []
         tables.each {|x|
