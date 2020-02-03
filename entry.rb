@@ -8,7 +8,7 @@ class Entry
         @SelectionWeight = e["SelectionWeight"]
     end
 
-    # Teturn a random number between MinDrops and Max Drops
+    # Return a random number between MinDrops and Max Drops
     def select_amount
         amount = rand(min..max)
         return amount
