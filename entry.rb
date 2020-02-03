@@ -1,5 +1,5 @@
 class Entry
-    # take in an entry hash object and initialize an Entry object
+    # Take in an entry hash object and initialize an Entry object
     def initialize(e)
         @EntryType = e["EntryType"]
         @EntryName = e["EntryName"]
@@ -8,7 +8,7 @@ class Entry
         @SelectionWeight = e["SelectionWeight"]
     end
 
-    # return a random number between MinDrops and Max Drops
+    # Teturn a random number between MinDrops and Max Drops
     def select_amount
         amount = rand(min..max)
         return amount
