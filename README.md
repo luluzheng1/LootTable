@@ -10,13 +10,13 @@
 
 This loot generator application contains four files: main.rb, loot.rb, loot_table.rb, and entry.rb. Their usage and relations to each other are described below. 
 
-###main.rb
+### main.rb
 > * Initializes the table data, then prompts the user to enter the name of a loot table and a number of drops (space delimited) and generates loot to stdout.
 > * If the input is invalid, it reprompts the user until a valid input is received.
 > * The program stays in an infinite loop until the user types exit to close the program.
 >  Requires loot.rb, entry.rb, and loot_table.rb.
 
-###loot.rb
+### loot.rb
 > * Contains classes Util and Loot. 
 > * Requires loot_table.rb and entry.rb.
 > * Class Util is mainly used for JSON Parsing and debuggin purposes.
@@ -31,7 +31,7 @@ This loot generator application contains four files: main.rb, loot.rb, loot_tabl
 >     * tables - return an array of all LootTable objects in Loot
 >     * names - return an array of the names of all LootTable objects in Loot 
 
-###loot_table.rb
+### loot_table.rb
 > * Contains class LootTable
 > * Class LootTable creates a LootTable object
 >   * Functions:
@@ -47,7 +47,7 @@ This loot generator application contains four files: main.rb, loot.rb, loot_tabl
 >	  * entries - return an array of all entries in LootTable
 >	  * entrynames - return an array of the names of all entries in LootTable
 
-###entry.rb
+### entry.rb
 > * Contains class Entry
 > * Class Entry creates an Entry object
 >   * Functions:
