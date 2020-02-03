@@ -1,4 +1,4 @@
-require "./loot_generator.rb"
+require "./loot.rb"
 
 # Read data from JSON file
 # Initialize Loot object
@@ -9,13 +9,18 @@ myLoot = Loot.new($h)
 loop do
 	# Get user input 
 	input = gets
-	input ||= '' # Set to empty strin if nil
+	input ||= '' # Set to empty string if nil
 	input.chomp! # Remove trailing newline
 	exit if input == 'exit'
 	tableName = input.split.first
 	numDrop = input.split.last.to_i
 
 	table = myLoot.findTable(tableName)
+	if table.nil?
+		puts "Table " + tableName + " does not exist, please enter a valid table name"
+		next
+	end
+
 	tablenames = myLoot.names
 	h = Hash.new
 

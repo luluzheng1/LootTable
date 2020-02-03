@@ -58,5 +58,4 @@ class Loot
         return names
     end
 
-
 end
