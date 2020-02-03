@@ -1,6 +1,6 @@
 # Loot_Generator
 
-## A console application written in Ruby that generators loot to stdout from a defined set of loot tables, per user request
+## A console application written in Ruby that generates loot to stdout from a defined set of loot tables, per user request
 
 * This program reads data from a json file, "loot_table_example.json"
 * To run the program, type ruby main.rb
