@@ -40,8 +40,7 @@ This loot generator application contains four files: main.rb, loot.rb, loot_tabl
 >	  * select_entry - returns a randomly selected entry from a LootTable's TableEntryCollection
 >	  * entriesAreTable(tablenames) - returns an array of entries that are a LootTable
 >	  * random(tablenames, num_drop) - Generates loot for LootTables of type "Random". Returns a hash of the names of entries that are LootTables as the keys and the number of drops as values. 
->	  * uniquerandom(tablenames, num_drop) - Generates loot for LootTables of type 
-"UniqueRandom". Returns a hash of the names of entries that are LootTables as the keys and the number of drops as values. When all entries have been selected, no loot is further generated and statement "Entries all exhausted..." is printed to stdout.  
+>	  * uniquerandom(tablenames, num_drop) - Generates loot for LootTables of type "UniqueRandom". Returns a hash of the names of entries that are LootTables as the keys and the number of drops as values. When all entries have been selected, no loot is further generated.  
 >	  * type - return the type of LootTable object
 >	  * name - return the name of LootTable object
 >	  * entries - return an array of all entries in LootTable

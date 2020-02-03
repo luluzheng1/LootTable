@@ -92,7 +92,6 @@ class LootTable
 
         while num_drop > 0
             if exhausted
-                puts "Entries all exhausted, no more loot could be dropped" 
                 break
             end
 
